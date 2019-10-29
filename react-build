@@ -1,0 +1,85 @@
+#!/usr/bin/env nodejs
+var Babel = require("@babel/core");
+var FileSystem = require('fs');
+var Browserify = require("browserify");
+var Path = require("path");
+ 
+var inputFilePath = null;
+var outputFilePath = null;
+
+function showLoadedOption(optionName){
+	console.log("Loaded Option: " + optionName);
+}
+
+function init(arguments){
+	for(var i=0; i < arguments.length; i++){
+		var argument = arguments[i];
+		var argumentLength = arguments.length;
+		switch(argument){
+			case "--source":
+				if(optionHasValue(i, argumentLength)){
+					inputFilePath = Path.normalize(arguments[(i + 1)]);
+					outputFilePath = Path.normalize(inputFilePath.replace(Path.extname(inputFilePath), ".min.js"));
+				}
+				break;
+			case "--mangle":
+				doMangle = true;
+				showLoadedOption("Mangle");
+				break;
+			default:
+				break;
+		}
+	}
+}
+
+function optionHasValue(optionIndex, numberOfArguments){
+	if((optionIndex + 1) < numberOfArguments){
+		return true;
+	}
+	return false;
+}
+
+//begin script
+
+init(process.argv);
+
+
+if(inputFilePath != null && outputFilePath != null){
+	console.log("Source: " + inputFilePath);
+	if(FileSystem.existsSync(inputFilePath)) {
+
+        var bundleFs = FileSystem.createWriteStream(outputFilePath);
+
+		try{
+            output = Browserify(inputFilePath)
+                .transform('babelify', {
+                    presets: [
+                        "@babel/preset-env", 
+                        "@babel/preset-react", 
+                        ["minify", {
+                            "mangle": {}
+                        }]
+                    ]
+                })
+                .bundle()
+                .pipe(bundleFs)
+
+            bundleFs.on('finish', function () {
+                return console.log("Created: " + outputFilePath);
+            });
+
+		}
+		catch(exception){
+			console.log("Error: Failed to transform " + inputFilePath);
+			console.log("Exception: " + exception);
+		}
+
+	}
+	else{
+		console.log("Error: Source file does not exist!");
+	}
+
+}
+else{
+	console.log("Error: Please provide a source file using the --source option.");
+}

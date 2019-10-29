@@ -1,0 +1,37 @@
+{
+  "name": "react-build",
+  "version": "1.0.0",
+  "description": "_Utility for converting JSX files to JS files + minification + uglification_",
+  "main": "react-build",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jakegreer/react-build.git"
+  },
+  "author": "Marc Martinez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jakegreer/react-build/issues"
+  },
+  "homepage": "https://github.com/jakegreer/react-build#readme",
+  "dependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-transform-modules-commonjs": "^7.6.0",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.0.0",
+    "babel-cli": "^6.26.0",
+    "babel-preset-minify": "^0.5.1",
+    "babelify": "^10.0.0",
+    "browserify": "^16.5.0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.3",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-object-rest-spread": "^7.5.5",
+    "@babel/plugin-transform-arrow-functions": "^7.2.0"
+  }
+}
